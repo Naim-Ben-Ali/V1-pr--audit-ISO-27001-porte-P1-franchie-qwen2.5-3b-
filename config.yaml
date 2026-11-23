@@ -1,0 +1,38 @@
+# Configuration de l'assistant de pré-audit ISO 27001 (V1)
+# Tout tourne en local : Ollama doit écouter sur 127.0.0.1.
+
+ollama:
+  url: "http://127.0.0.1:11434"
+  # Modèle de jugement : 7–8B quantifié Q4 si ta carte a 6–8 Go de VRAM,
+  # 3–4B si elle a 4 Go. Compare deux modèles avec `python -m preaudit eval`.
+  llm_model: "qwen2.5:3b"
+  # Embeddings multilingues (les documents sont en français).
+  embed_model: "bge-m3"
+  # Taille de contexte imposée : la valeur par défaut d'Ollama tronque sans prévenir.
+  num_ctx: 8192
+  temperature: 0
+  timeout_s: 600
+  # Garde le modèle chargé entre deux appels pendant une analyse.
+  keep_alive: "10m"
+
+# "ollama" en usage réel, "mock" pour les tests sans GPU.
+backend: "ollama"
+
+retrieval:
+  top_k: 6              # extraits envoyés au LLM par exigence
+  candidates: 30        # candidats par méthode avant fusion
+  type_boost: 1.5       # bonus pour les extraits issus d'un type de document attendu
+  # Tri sans LLM : une exigence est "non trouvée" si aucun mot-clé ne matche
+  # ET si la meilleure similarité vectorielle est sous ce seuil.
+  triage_min_cosine: 0.45
+
+chunking:
+  max_chars: 1400
+  min_chars: 200
+
+checks:
+  # Un document dont la date dépasse cet âge sans date de revue est signalé.
+  max_doc_age_months: 12
+
+referentiel: "referentiel/referentiel_clauses_4_10.yaml"
+missions_dir: "missions"

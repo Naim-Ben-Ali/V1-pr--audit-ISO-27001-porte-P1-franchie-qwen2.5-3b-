@@ -1,0 +1,754 @@
+# =====================================================================
+# Référentiel de pré-audit documentaire — ISO/IEC 27001:2022, clauses 4 à 10
+# ---------------------------------------------------------------------
+# IMPORTANT (licence) : ce fichier contient uniquement des REFORMULATIONS
+# originales et des numéros de référence. Il ne reproduit pas le texte de
+# la norme. Garde la norme officielle (achetée) à part, et ne l'indexe
+# jamais dans le corpus des documents du client.
+#
+# Chaque exigence est "atomique" : une seule chose à vérifier.
+#   critique: true  -> une absence est classée NC majeure potentielle
+#   doc_attendus    -> types de documents où chercher (voir types_documents)
+#   mots_cles       -> termes FR/EN pour la recherche plein texte
+# =====================================================================
+version: "1.2.0"
+# 1.2.0 : points à vérifier (attendus) explicites pour les exigences à plusieurs volets.
+# 1.1.0 : couverture vérifiée contre le texte de la norme (clauses 4 à 10) fourni par l'utilisateur.
+norme: "ISO/IEC 27001:2022"
+perimetre: "Clauses 4 à 10 (V1)"
+
+# ---------------------------------------------------------------------
+# Types de documents reconnus à l'ingestion (classement par mots-clés
+# dans le nom du fichier et le début du document).
+# ---------------------------------------------------------------------
+types_documents:
+  norme_exclue:
+    libelle: "Texte de la norme — exclu du corpus de preuves"
+    mots_cles: []
+  politique_ssi:
+    libelle: "Politique de sécurité de l'information"
+    mots_cles: ["politique de sécurité", "politique ssi", "pssi", "security policy", "information security policy", "politique générale"]
+  perimetre:
+    libelle: "Périmètre / domaine d'application du SMSI"
+    mots_cles: ["périmètre", "domaine d'application", "scope", "perimetre du smsi"]
+  manuel_smsi:
+    libelle: "Manuel SMSI"
+    mots_cles: ["manuel smsi", "manuel du smsi", "isms manual", "manuel de management"]
+  contexte:
+    libelle: "Contexte, enjeux et parties intéressées"
+    mots_cles: ["contexte", "enjeux internes", "enjeux externes", "parties intéressées", "interested parties", "pestel", "swot"]
+  roles:
+    libelle: "Rôles et responsabilités"
+    mots_cles: ["rôles et responsabilités", "roles and responsibilities", "organigramme", "raci", "fiche de poste", "lettre de nomination"]
+  methodo_risques:
+    libelle: "Méthodologie d'appréciation et de traitement des risques"
+    mots_cles: ["méthodologie", "méthode d'appréciation", "risk methodology", "critères d'acceptation", "ebios", "iso 27005", "processus de gestion des risques"]
+  registre_risques:
+    libelle: "Registre / résultats d'appréciation des risques"
+    mots_cles: ["registre des risques", "risk register", "analyse de risques", "appréciation des risques", "cartographie des risques", "risk assessment"]
+  plan_traitement:
+    libelle: "Plan de traitement des risques"
+    mots_cles: ["plan de traitement", "risk treatment plan", "rtp", "traitement des risques"]
+  soa:
+    libelle: "Déclaration d'applicabilité (SoA)"
+    mots_cles: ["déclaration d'applicabilité", "declaration d'applicabilite", "statement of applicability", "soa", "ddA"]
+  objectifs:
+    libelle: "Objectifs de sécurité et indicateurs"
+    mots_cles: ["objectifs de sécurité", "objectifs ssi", "security objectives", "indicateurs", "kpi", "tableau de bord"]
+  competences:
+    libelle: "Compétences, formation, sensibilisation"
+    mots_cles: ["plan de formation", "compétences", "sensibilisation", "awareness", "training", "attestation de formation", "matrice de compétences"]
+  communication:
+    libelle: "Plan de communication"
+    mots_cles: ["plan de communication", "communication plan", "matrice de communication"]
+  maitrise_documentaire:
+    libelle: "Procédure de maîtrise des informations documentées"
+    mots_cles: ["maîtrise des documents", "maitrise documentaire", "gestion documentaire", "document control", "informations documentées"]
+  procedure:
+    libelle: "Procédure / mode opératoire"
+    mots_cles: ["procédure", "procedure", "mode opératoire", "instruction de travail", "processus"]
+  surveillance:
+    libelle: "Surveillance, mesure, résultats d'indicateurs"
+    mots_cles: ["surveillance", "mesure", "monitoring", "rapport mensuel", "résultats des indicateurs", "reporting"]
+  audit_interne:
+    libelle: "Programme et rapports d'audit interne"
+    mots_cles: ["audit interne", "internal audit", "programme d'audit", "plan d'audit", "rapport d'audit"]
+  revue_direction:
+    libelle: "Revue de direction"
+    mots_cles: ["revue de direction", "management review", "compte rendu de revue", "pv de revue"]
+  nc_actions:
+    libelle: "Non-conformités et actions correctives"
+    mots_cles: ["non-conformité", "non conformité", "action corrective", "corrective action", "registre des nc", "plan d'actions"]
+  enregistrement:
+    libelle: "Enregistrement / preuve"
+    mots_cles: ["enregistrement", "preuve", "journal", "log", "compte rendu", "attestation", "liste d'émargement"]
+
+# ---------------------------------------------------------------------
+# Informations documentées dont l'existence est exigée par les clauses
+# 4 à 10. Vérifiées SANS LLM (type de document + mots-clés).
+# ---------------------------------------------------------------------
+documents_obligatoires:
+  - id: DO-4.3
+    source: "4.3"
+    libelle: "Périmètre du SMSI"
+    types: [perimetre, manuel_smsi]
+    mots_cles: ["périmètre du smsi", "domaine d'application", "scope of the isms", "périmètre"]
+  - id: DO-5.2
+    source: "5.2"
+    libelle: "Politique de sécurité de l'information"
+    types: [politique_ssi]
+    mots_cles: ["politique de sécurité de l'information", "information security policy"]
+  - id: DO-6.1.2
+    source: "6.1.2"
+    libelle: "Processus d'appréciation des risques"
+    types: [methodo_risques]
+    mots_cles: ["critères d'acceptation", "appréciation des risques", "méthodologie"]
+  - id: DO-6.1.3
+    source: "6.1.3"
+    libelle: "Processus de traitement des risques"
+    types: [methodo_risques, plan_traitement]
+    mots_cles: ["traitement des risques", "options de traitement", "risk treatment"]
+  - id: DO-SOA
+    source: "6.1.3 d)"
+    libelle: "Déclaration d'applicabilité"
+    types: [soa]
+    mots_cles: ["déclaration d'applicabilité", "statement of applicability"]
+  - id: DO-RTP
+    source: "6.1.3 e)"
+    libelle: "Plan de traitement des risques"
+    types: [plan_traitement]
+    mots_cles: ["plan de traitement des risques", "risk treatment plan"]
+  - id: DO-6.2
+    source: "6.2"
+    libelle: "Objectifs de sécurité de l'information"
+    types: [objectifs]
+    mots_cles: ["objectifs de sécurité", "security objectives"]
+  - id: DO-7.2
+    source: "7.2"
+    libelle: "Preuves de compétence"
+    types: [competences]
+    mots_cles: ["attestation de formation", "matrice de compétences", "plan de formation"]
+  - id: DO-8.2
+    source: "8.2"
+    libelle: "Résultats des appréciations des risques"
+    types: [registre_risques]
+    mots_cles: ["registre des risques", "résultats de l'appréciation", "risk register"]
+  - id: DO-8.3
+    source: "8.3"
+    libelle: "Résultats du traitement des risques"
+    types: [plan_traitement, registre_risques]
+    mots_cles: ["état d'avancement du traitement", "suivi du plan de traitement", "risque résiduel"]
+  - id: DO-9.1
+    source: "9.1"
+    libelle: "Résultats de surveillance et de mesure"
+    types: [surveillance, objectifs]
+    mots_cles: ["résultats des indicateurs", "tableau de bord", "mesure de la performance"]
+  - id: DO-9.2
+    source: "9.2"
+    libelle: "Programme d'audit interne et résultats"
+    types: [audit_interne]
+    mots_cles: ["programme d'audit", "audit interne", "internal audit"]
+  - id: DO-9.3
+    source: "9.3"
+    libelle: "Résultats des revues de direction"
+    types: [revue_direction]
+    mots_cles: ["revue de direction", "management review"]
+  - id: DO-10.2
+    source: "10.2"
+    libelle: "Non-conformités et actions correctives"
+    types: [nc_actions]
+    mots_cles: ["non-conformité", "action corrective", "corrective action"]
+
+# ---------------------------------------------------------------------
+# Exigences atomiques (reformulées)
+# ---------------------------------------------------------------------
+exigences:
+  # ---------------- 4. Contexte ----------------
+  - id: "4.1-R1"
+    source: "4.1"
+    theme: "Contexte de l'organisme"
+    exigence: "Les enjeux internes et externes qui influencent la capacité du SMSI à atteindre ses résultats sont identifiés."
+    doc_attendus: [contexte, manuel_smsi, perimetre]
+    mots_cles: ["enjeux internes", "enjeux externes", "contexte", "pestel", "swot", "internal issues", "external issues"]
+    critique: false
+    questions_audit: ["Comment et à quelle fréquence les enjeux internes et externes sont-ils réexaminés ?"]
+  - id: "4.2-R1"
+    source: "4.2"
+    theme: "Contexte de l'organisme"
+    exigence: "Les parties intéressées pertinentes pour le SMSI sont identifiées."
+    doc_attendus: [contexte, manuel_smsi]
+    mots_cles: ["parties intéressées", "interested parties", "parties prenantes", "stakeholders"]
+    critique: false
+    questions_audit: ["Qui tient à jour la liste des parties intéressées ?"]
+  - id: "4.2-R2"
+    source: "4.2"
+    theme: "Contexte de l'organisme"
+    exigence: "Les exigences pertinentes de ces parties intéressées, y compris légales, réglementaires et contractuelles, sont déterminées."
+    doc_attendus: [contexte, manuel_smsi]
+    mots_cles: ["exigences légales", "réglementaires", "contractuelles", "attentes", "requirements", "loi", "rgpd", "protection des données"]
+    critique: false
+    questions_audit: ["Comment la veille réglementaire est-elle organisée ?"]
+  - id: "4.2-R3"
+    source: "4.2"
+    theme: "Contexte de l'organisme"
+    exigence: "L'organisme indique lesquelles de ces exigences sont prises en charge par le SMSI."
+    doc_attendus: [contexte, manuel_smsi]
+    mots_cles: ["prises en compte", "traitées par le smsi", "addressed", "couvertes"]
+    critique: false
+    questions_audit: []
+  - id: "4.3-R1"
+    source: "4.3"
+    theme: "Contexte de l'organisme"
+    exigence: "Le périmètre du SMSI est défini et disponible sous forme documentée."
+    attendus: ["les activités couvertes", "les sites ou lieux couverts", "le périmètre est sous forme documentée"]
+    doc_attendus: [perimetre, manuel_smsi]
+    mots_cles: ["périmètre", "domaine d'application", "scope", "sites", "activités couvertes"]
+    critique: true
+    questions_audit: ["Le périmètre a-t-il été validé par la direction ?"]
+  - id: "4.3-R2"
+    source: "4.3"
+    theme: "Contexte de l'organisme"
+    exigence: "Le périmètre décrit les limites, les interfaces et les dépendances avec les activités réalisées par d'autres organismes."
+    doc_attendus: [perimetre, manuel_smsi]
+    mots_cles: ["interfaces", "dépendances", "limites", "exclusions", "sous-traitants", "prestataires", "dependencies"]
+    critique: false
+    questions_audit: ["Quelles activités externalisées sont en interface avec le périmètre ?"]
+  - id: "4.3-R3"
+    source: "4.3"
+    theme: "Contexte de l'organisme"
+    exigence: "La définition du périmètre tient compte des enjeux identifiés (4.1) et des exigences des parties intéressées (4.2)."
+    doc_attendus: [perimetre, manuel_smsi, contexte]
+    mots_cles: ["enjeux", "parties intéressées", "exigences", "périmètre"]
+    critique: false
+    questions_audit: []
+  - id: "4.4-R1"
+    source: "4.4"
+    theme: "Contexte de l'organisme"
+    exigence: "Le SMSI est établi avec ses processus et leurs interactions."
+    doc_attendus: [manuel_smsi, procedure]
+    mots_cles: ["cartographie des processus", "processus", "interactions", "pdca", "système de management"]
+    critique: false
+    questions_audit: []
+
+  # ---------------- 5. Leadership ----------------
+  - id: "5.1-R1"
+    source: "5.1"
+    theme: "Leadership"
+    exigence: "La direction démontre son engagement envers le SMSI (ressources fournies, intégration aux processus métier, soutien)."
+    doc_attendus: [politique_ssi, manuel_smsi, revue_direction]
+    mots_cles: ["direction", "engagement", "ressources", "soutien", "leadership", "top management"]
+    critique: false
+    questions_audit: ["Quel exemple récent montre une décision de la direction en faveur du SMSI ?"]
+  - id: "5.1-R2"
+    source: "5.1"
+    theme: "Leadership"
+    exigence: "La direction veille à ce que la politique et les objectifs de sécurité soient compatibles avec l'orientation stratégique de l'organisme."
+    doc_attendus: [politique_ssi, objectifs, manuel_smsi]
+    mots_cles: ["stratégie", "orientation stratégique", "objectifs", "compatible"]
+    critique: false
+    questions_audit: []
+  - id: "5.1-R3"
+    source: "5.1"
+    theme: "Leadership"
+    exigence: "La direction communique sur l'importance d'un management efficace de la sécurité, soutient les personnes et les managers dans leur contribution et promeut l'amélioration continue."
+    doc_attendus: [politique_ssi, communication, revue_direction, manuel_smsi]
+    mots_cles: ["communique", "importance", "soutien", "managers", "amélioration continue"]
+    critique: false
+    questions_audit: ["Comment la direction a-t-elle communiqué sur la sécurité cette année ?"]
+  - id: "5.2-R1"
+    source: "5.2"
+    theme: "Leadership"
+    exigence: "Une politique de sécurité de l'information est établie par la direction et adaptée à la mission de l'organisme."
+    doc_attendus: [politique_ssi]
+    mots_cles: ["politique de sécurité", "politique ssi", "security policy"]
+    critique: true
+    questions_audit: []
+  - id: "5.2-R2"
+    source: "5.2"
+    theme: "Leadership"
+    exigence: "La politique contient un engagement à satisfaire les exigences applicables et un engagement d'amélioration continue du SMSI."
+    attendus: ["engagement à satisfaire les exigences applicables", "engagement d'amélioration continue du SMSI"]
+    doc_attendus: [politique_ssi]
+    mots_cles: ["engagement", "amélioration continue", "satisfaire les exigences", "continual improvement", "s'engage"]
+    critique: false
+    questions_audit: []
+  - id: "5.2-R3"
+    source: "5.2"
+    theme: "Leadership"
+    exigence: "La politique fournit un cadre pour fixer les objectifs de sécurité ou contient ces objectifs."
+    doc_attendus: [politique_ssi, objectifs]
+    mots_cles: ["objectifs", "cadre", "objectives"]
+    critique: false
+    questions_audit: []
+  - id: "5.2-R4"
+    source: "5.2"
+    theme: "Leadership"
+    exigence: "La politique est communiquée au personnel et mise à disposition des parties intéressées concernées."
+    doc_attendus: [politique_ssi, communication]
+    mots_cles: ["communiquée", "diffusée", "intranet", "affichage", "disponible", "communicated", "diffusion"]
+    critique: false
+    questions_audit: ["Comment un nouvel arrivant prend-il connaissance de la politique ?"]
+  - id: "5.3-R1"
+    source: "5.3"
+    theme: "Leadership"
+    exigence: "Les responsabilités et autorités relatives à la sécurité de l'information sont attribuées et communiquées."
+    attendus: ["rôles de sécurité identifiés", "responsabilités attribuées", "attribution communiquée ou formalisée"]
+    doc_attendus: [roles, manuel_smsi, politique_ssi]
+    mots_cles: ["rôles", "responsabilités", "rssi", "ciso", "responsable sécurité", "autorités", "raci"]
+    critique: true
+    questions_audit: ["Le RSSI dispose-t-il d'une lettre de nomination ou d'une fiche de poste ?"]
+  - id: "5.3-R2"
+    source: "5.3"
+    theme: "Leadership"
+    exigence: "Une personne est chargée de rendre compte à la direction de la performance du SMSI."
+    doc_attendus: [roles, manuel_smsi]
+    mots_cles: ["rendre compte", "reporting", "rapporte à la direction", "report to top management"]
+    critique: false
+    questions_audit: []
+  - id: "5.3-R3"
+    source: "5.3"
+    theme: "Leadership"
+    exigence: "Une responsabilité et une autorité sont attribuées pour veiller à ce que le SMSI respecte les exigences de la norme."
+    doc_attendus: [roles, manuel_smsi]
+    mots_cles: ["conformité du smsi", "pilote le smsi", "responsable du smsi", "autorité"]
+    critique: false
+    questions_audit: []
+
+  # ---------------- 6. Planification ----------------
+  - id: "6.1.1-R1"
+    source: "6.1.1"
+    theme: "Planification"
+    exigence: "Les risques et opportunités liés au SMSI lui-même sont déterminés et des actions sont planifiées pour y répondre."
+    doc_attendus: [manuel_smsi, methodo_risques, contexte]
+    mots_cles: ["risques et opportunités", "opportunités", "opportunities", "actions planifiées"]
+    critique: false
+    questions_audit: []
+  - id: "6.1.1-R2"
+    source: "6.1.1"
+    theme: "Planification"
+    exigence: "Les actions face aux risques et opportunités du SMSI sont intégrées à ses processus et leur efficacité est évaluée."
+    doc_attendus: [manuel_smsi, methodo_risques, revue_direction]
+    mots_cles: ["efficacité des actions", "intégrées", "évaluation de l'efficacité"]
+    critique: false
+    questions_audit: []
+  - id: "6.1.2-R1"
+    source: "6.1.2"
+    theme: "Planification"
+    exigence: "Des critères d'acceptation des risques et des critères pour réaliser les appréciations sont définis."
+    attendus: ["critères d'acceptation des risques", "critères pour réaliser l'appréciation (échelles, méthode de cotation)"]
+    doc_attendus: [methodo_risques]
+    mots_cles: ["critères d'acceptation", "seuil d'acceptation", "acceptation des risques", "risk acceptance", "échelle", "grille"]
+    critique: true
+    questions_audit: ["Qui a approuvé le seuil d'acceptation des risques ?"]
+  - id: "6.1.2-R2"
+    source: "6.1.2"
+    theme: "Planification"
+    exigence: "Le processus d'appréciation est conçu pour produire des résultats cohérents, valides et comparables d'une fois à l'autre."
+    doc_attendus: [methodo_risques]
+    mots_cles: ["méthodologie", "répétable", "cohérent", "comparable", "échelle de vraisemblance", "échelle d'impact"]
+    critique: false
+    questions_audit: []
+  - id: "6.1.2-R3"
+    source: "6.1.2"
+    theme: "Planification"
+    exigence: "Les risques de perte de confidentialité, d'intégrité et de disponibilité dans le périmètre sont identifiés."
+    attendus: ["risques liés à la confidentialité, à l'intégrité et à la disponibilité", "risques identifiés dans le périmètre du SMSI"]
+    doc_attendus: [registre_risques, methodo_risques]
+    mots_cles: ["confidentialité", "intégrité", "disponibilité", "dic", "cia", "menaces", "vulnérabilités", "identification des risques"]
+    critique: true
+    questions_audit: []
+  - id: "6.1.2-R4"
+    source: "6.1.2"
+    theme: "Planification"
+    exigence: "Un propriétaire est désigné pour chaque risque."
+    doc_attendus: [registre_risques, methodo_risques]
+    mots_cles: ["propriétaire du risque", "risk owner", "propriétaire"]
+    critique: false
+    questions_audit: ["Les propriétaires de risques connaissent-ils leurs risques ?"]
+  - id: "6.1.2-R5"
+    source: "6.1.2"
+    theme: "Planification"
+    exigence: "Les risques sont analysés (conséquences, vraisemblance) et leur niveau est déterminé."
+    attendus: ["conséquences ou impact évalués", "vraisemblance évaluée", "niveau de risque déterminé"]
+    doc_attendus: [registre_risques, methodo_risques]
+    mots_cles: ["vraisemblance", "probabilité", "impact", "gravité", "niveau de risque", "likelihood", "consequence"]
+    critique: true
+    questions_audit: []
+  - id: "6.1.2-R6"
+    source: "6.1.2"
+    theme: "Planification"
+    exigence: "Les risques sont évalués par rapport aux critères et priorisés pour le traitement."
+    doc_attendus: [registre_risques, methodo_risques]
+    mots_cles: ["priorisation", "évaluation des risques", "prioritaires", "au-dessus du seuil", "risk evaluation"]
+    critique: false
+    questions_audit: []
+  - id: "6.1.3-R1"
+    source: "6.1.3"
+    theme: "Planification"
+    exigence: "Des options de traitement des risques sont choisies (réduire, éviter, transférer, accepter)."
+    attendus: ["une option de traitement est choisie pour les risques à traiter"]
+    doc_attendus: [plan_traitement, methodo_risques, registre_risques]
+    mots_cles: ["réduire", "éviter", "transférer", "accepter", "options de traitement", "treatment options", "partager"]
+    critique: true
+    questions_audit: []
+  - id: "6.1.3-R2"
+    source: "6.1.3"
+    theme: "Planification"
+    exigence: "Les mesures nécessaires sont déterminées et comparées à l'Annexe A pour vérifier qu'aucune mesure nécessaire n'a été omise."
+    doc_attendus: [plan_traitement, soa, methodo_risques]
+    mots_cles: ["annexe a", "mesures de sécurité", "contrôles", "controls", "comparaison"]
+    critique: false
+    questions_audit: []
+  - id: "6.1.3-R3"
+    source: "6.1.3"
+    theme: "Planification"
+    exigence: "Une déclaration d'applicabilité indique les mesures retenues, la justification de leur inclusion, leur état de mise en œuvre et la justification des exclusions."
+    attendus: ["mesures nécessaires listées", "justification des inclusions", "état de mise en œuvre", "justification des exclusions"]
+    doc_attendus: [soa]
+    mots_cles: ["déclaration d'applicabilité", "applicable", "justification", "exclusion", "statement of applicability"]
+    critique: true
+    questions_audit: []
+  - id: "6.1.3-R4"
+    source: "6.1.3"
+    theme: "Planification"
+    exigence: "Un plan de traitement des risques est formulé."
+    attendus: ["actions de traitement", "responsables", "échéances"]
+    doc_attendus: [plan_traitement]
+    mots_cles: ["plan de traitement", "actions", "échéance", "responsable", "treatment plan"]
+    critique: true
+    questions_audit: []
+  - id: "6.1.3-R5"
+    source: "6.1.3"
+    theme: "Planification"
+    exigence: "Les propriétaires des risques approuvent le plan de traitement et acceptent les risques résiduels."
+    doc_attendus: [plan_traitement, registre_risques]
+    mots_cles: ["risque résiduel", "acceptation", "approuvé", "residual risk", "validé par"]
+    critique: false
+    questions_audit: ["Montrez une preuve d'acceptation formelle d'un risque résiduel."]
+  - id: "6.2-R1"
+    source: "6.2"
+    theme: "Planification"
+    exigence: "Des objectifs de sécurité de l'information sont établis et cohérents avec la politique."
+    attendus: ["objectifs de sécurité définis", "cohérence avec la politique"]
+    doc_attendus: [objectifs, politique_ssi]
+    mots_cles: ["objectifs de sécurité", "objectifs", "objectives"]
+    critique: true
+    questions_audit: []
+  - id: "6.2-R2"
+    source: "6.2"
+    theme: "Planification"
+    exigence: "Les objectifs sont mesurables (indicateur, cible) lorsque c'est possible, et suivis."
+    doc_attendus: [objectifs, surveillance]
+    mots_cles: ["indicateur", "kpi", "cible", "mesurable", "taux", "target", "%"]
+    critique: false
+    questions_audit: ["Comment la valeur de chaque indicateur est-elle calculée ?"]
+  - id: "6.2-R3"
+    source: "6.2"
+    theme: "Planification"
+    exigence: "La planification des objectifs précise les actions, les ressources, le responsable, l'échéance et la façon d'évaluer les résultats."
+    doc_attendus: [objectifs]
+    mots_cles: ["échéance", "responsable", "ressources", "plan d'action", "deadline"]
+    critique: false
+    questions_audit: []
+  - id: "6.2-R4"
+    source: "6.2"
+    theme: "Planification"
+    exigence: "Les objectifs tiennent compte des exigences de sécurité applicables et des résultats de l'appréciation et du traitement des risques."
+    doc_attendus: [objectifs, plan_traitement]
+    mots_cles: ["risques", "exigences applicables", "appréciation des risques", "objectifs"]
+    critique: false
+    questions_audit: []
+  - id: "6.2-R5"
+    source: "6.2"
+    theme: "Planification"
+    exigence: "Les objectifs sont communiqués aux personnes concernées et mis à jour lorsque nécessaire."
+    doc_attendus: [objectifs, communication, revue_direction]
+    mots_cles: ["communiqués", "mis à jour", "diffusés", "objectifs"]
+    critique: false
+    questions_audit: []
+  - id: "6.3-R1"
+    source: "6.3"
+    theme: "Planification"
+    exigence: "Les modifications du SMSI sont réalisées de manière planifiée."
+    doc_attendus: [manuel_smsi, procedure]
+    mots_cles: ["gestion des changements", "modifications du smsi", "planification des changements", "change"]
+    critique: false
+    questions_audit: []
+
+  # ---------------- 7. Support ----------------
+  - id: "7.1-R1"
+    source: "7.1"
+    theme: "Support"
+    exigence: "Les ressources nécessaires au SMSI sont déterminées et fournies."
+    doc_attendus: [manuel_smsi, revue_direction, politique_ssi]
+    mots_cles: ["ressources", "budget", "moyens", "effectifs", "resources"]
+    critique: false
+    questions_audit: []
+  - id: "7.2-R1"
+    source: "7.2"
+    theme: "Support"
+    exigence: "Les compétences nécessaires pour les personnes qui influencent la sécurité de l'information sont déterminées."
+    doc_attendus: [competences, roles]
+    mots_cles: ["compétences", "matrice de compétences", "profil", "qualification", "competence"]
+    critique: false
+    questions_audit: []
+  - id: "7.2-R2"
+    source: "7.2"
+    theme: "Support"
+    exigence: "Des actions (formation, accompagnement, recrutement) sont prévues pour acquérir les compétences manquantes, et leur efficacité est évaluée."
+    doc_attendus: [competences]
+    mots_cles: ["plan de formation", "formation", "évaluation de l'efficacité", "training"]
+    critique: false
+    questions_audit: []
+  - id: "7.2-R3"
+    source: "7.2"
+    theme: "Support"
+    exigence: "Des preuves de compétence sont conservées."
+    doc_attendus: [competences, enregistrement]
+    mots_cles: ["attestation", "certificat", "diplôme", "émargement", "preuve de formation"]
+    critique: false
+    questions_audit: ["Montrez les attestations de formation de l'équipe sécurité."]
+  - id: "7.2-R4"
+    source: "7.2"
+    theme: "Support"
+    exigence: "Les personnes concernées sont compétentes au regard de leur formation initiale, de leur formation professionnelle ou de leur expérience."
+    doc_attendus: [competences, roles]
+    mots_cles: ["diplôme", "expérience", "certification", "cv", "formation initiale"]
+    critique: false
+    questions_audit: ["Comment la compétence du RSSI a-t-elle été évaluée à sa nomination ?"]
+  - id: "7.3-R1"
+    source: "7.3"
+    theme: "Support"
+    exigence: "Le personnel est sensibilisé à la politique, à sa contribution au SMSI et aux conséquences d'un non-respect."
+    doc_attendus: [competences, communication]
+    mots_cles: ["sensibilisation", "awareness", "campagne", "phishing", "charte"]
+    critique: false
+    questions_audit: []
+  - id: "7.4-R1"
+    source: "7.4"
+    theme: "Support"
+    exigence: "Les besoins de communication interne et externe sont déterminés (sujet, moment, destinataires, moyen)."
+    doc_attendus: [communication, manuel_smsi]
+    mots_cles: ["communication", "destinataires", "fréquence", "canal", "matrice de communication"]
+    critique: false
+    questions_audit: []
+  - id: "7.5-R1"
+    source: "7.5"
+    theme: "Support"
+    exigence: "Les informations documentées sont identifiées (titre, date, auteur ou référence) et revues puis approuvées avant diffusion."
+    doc_attendus: [maitrise_documentaire, procedure]
+    mots_cles: ["identification", "version", "approbation", "validation", "revue documentaire"]
+    critique: false
+    questions_audit: []
+  - id: "7.5-R2"
+    source: "7.5"
+    theme: "Support"
+    exigence: "La diffusion, l'accès, le stockage, la conservation, le contrôle des versions et l'élimination des documents sont maîtrisés."
+    doc_attendus: [maitrise_documentaire]
+    mots_cles: ["diffusion", "conservation", "archivage", "gestion des versions", "élimination", "durée de conservation"]
+    critique: false
+    questions_audit: []
+  - id: "7.5-R3"
+    source: "7.5"
+    theme: "Support"
+    exigence: "Les informations documentées sont disponibles là où elles sont nécessaires et protégées (confidentialité, mauvais usage, perte d'intégrité)."
+    doc_attendus: [maitrise_documentaire, procedure]
+    mots_cles: ["protection des documents", "droits d'accès", "classification", "confidentialité", "intégrité"]
+    critique: false
+    questions_audit: []
+  - id: "7.5-R4"
+    source: "7.5"
+    theme: "Support"
+    exigence: "Les informations documentées d'origine externe nécessaires au SMSI sont identifiées et maîtrisées."
+    doc_attendus: [maitrise_documentaire]
+    mots_cles: ["origine externe", "documents externes", "réglementation", "normes", "contrats"]
+    critique: false
+    questions_audit: []
+
+  # ---------------- 8. Fonctionnement ----------------
+  - id: "8.1-R1"
+    source: "8.1"
+    theme: "Fonctionnement"
+    exigence: "Les processus nécessaires sont planifiés, maîtrisés et dotés de critères de fonctionnement."
+    doc_attendus: [procedure, manuel_smsi]
+    mots_cles: ["planification opérationnelle", "maîtrise opérationnelle", "critères", "procédure"]
+    critique: false
+    questions_audit: []
+  - id: "8.1-R2"
+    source: "8.1"
+    theme: "Fonctionnement"
+    exigence: "Les processus, produits ou services fournis par l'extérieur et pertinents pour le SMSI sont maîtrisés."
+    doc_attendus: [procedure, manuel_smsi]
+    mots_cles: ["prestataires", "sous-traitance", "fournisseurs", "externalisé", "outsourced", "suppliers"]
+    critique: false
+    questions_audit: []
+  - id: "8.1-R3"
+    source: "8.1"
+    theme: "Fonctionnement"
+    exigence: "Les modifications prévues sont maîtrisées et les conséquences des modifications imprévues sont analysées, avec des actions si nécessaire."
+    doc_attendus: [procedure, manuel_smsi]
+    mots_cles: ["gestion des changements", "changement", "modification", "imprévu", "change management"]
+    critique: false
+    questions_audit: []
+  - id: "8.1-R4"
+    source: "8.1"
+    theme: "Fonctionnement"
+    exigence: "Des informations documentées permettent d'avoir confiance dans le fait que les processus ont été réalisés comme prévu."
+    doc_attendus: [enregistrement, procedure, surveillance]
+    mots_cles: ["enregistrement", "preuve", "journal", "compte rendu", "traçabilité"]
+    critique: false
+    questions_audit: []
+  - id: "8.2-R1"
+    source: "8.2"
+    theme: "Fonctionnement"
+    exigence: "Les appréciations des risques sont réalisées à intervalles planifiés et lors de changements importants."
+    doc_attendus: [methodo_risques, registre_risques]
+    mots_cles: ["annuelle", "intervalles planifiés", "mise à jour", "réexamen", "changement significatif"]
+    critique: false
+    questions_audit: ["Date de la dernière appréciation complète des risques ?"]
+  - id: "8.3-R1"
+    source: "8.3"
+    theme: "Fonctionnement"
+    exigence: "Le plan de traitement des risques est mis en œuvre et son avancement est suivi."
+    doc_attendus: [plan_traitement, registre_risques]
+    mots_cles: ["avancement", "réalisé", "en cours", "état", "suivi du plan", "statut"]
+    critique: false
+    questions_audit: []
+
+  # ---------------- 9. Évaluation des performances ----------------
+  - id: "9.1-R1"
+    source: "9.1"
+    theme: "Évaluation des performances"
+    exigence: "L'organisme définit ce qui est surveillé et mesuré, les méthodes, la fréquence, et qui analyse les résultats."
+    attendus: ["ce qui est surveillé ou mesuré", "méthodes", "fréquence", "qui analyse les résultats"]
+    doc_attendus: [surveillance, objectifs, procedure]
+    mots_cles: ["surveillance", "mesure", "fréquence", "méthode de calcul", "indicateurs", "monitoring"]
+    critique: true
+    questions_audit: []
+  - id: "9.1-R2"
+    source: "9.1"
+    theme: "Évaluation des performances"
+    exigence: "Les résultats de la surveillance et de la mesure sont conservés et évalués."
+    doc_attendus: [surveillance, revue_direction]
+    mots_cles: ["résultats", "tableau de bord", "valeur mesurée", "tendance"]
+    critique: false
+    questions_audit: []
+  - id: "9.1-R3"
+    source: "9.1"
+    theme: "Évaluation des performances"
+    exigence: "L'organisme évalue la performance de la sécurité de l'information et l'efficacité du SMSI."
+    doc_attendus: [surveillance, revue_direction]
+    mots_cles: ["performance", "efficacité du smsi", "évaluation", "bilan"]
+    critique: false
+    questions_audit: []
+  - id: "9.2-R1"
+    source: "9.2"
+    theme: "Évaluation des performances"
+    exigence: "Des audits internes du SMSI sont réalisés à intervalles planifiés."
+    attendus: ["un audit interne réalisé ou planifié à intervalles définis"]
+    doc_attendus: [audit_interne]
+    mots_cles: ["audit interne", "internal audit", "auditeur interne"]
+    critique: true
+    questions_audit: ["Date et périmètre du dernier audit interne ?"]
+  - id: "9.2-R2"
+    source: "9.2"
+    theme: "Évaluation des performances"
+    exigence: "Un programme d'audit définit la fréquence, les méthodes, les responsabilités et le rapport des audits."
+    attendus: ["fréquence des audits", "méthodes", "responsabilités", "rapport des audits"]
+    doc_attendus: [audit_interne]
+    mots_cles: ["programme d'audit", "audit programme", "planning des audits"]
+    critique: true
+    questions_audit: []
+  - id: "9.2-R3"
+    source: "9.2"
+    theme: "Évaluation des performances"
+    exigence: "Les auditeurs internes sont choisis pour garantir l'objectivité et l'impartialité de l'audit."
+    doc_attendus: [audit_interne]
+    mots_cles: ["impartialité", "objectivité", "indépendance", "auditeurs"]
+    critique: false
+    questions_audit: []
+  - id: "9.2-R4"
+    source: "9.2"
+    theme: "Évaluation des performances"
+    exigence: "Les résultats des audits internes sont communiqués à la direction et conservés."
+    doc_attendus: [audit_interne, revue_direction]
+    mots_cles: ["rapport d'audit", "constats d'audit", "résultats d'audit"]
+    critique: false
+    questions_audit: []
+  - id: "9.2-R5"
+    source: "9.2"
+    theme: "Évaluation des performances"
+    exigence: "Les critères et le périmètre de chaque audit interne sont définis, et le programme tient compte de l'importance des processus et des résultats des audits précédents."
+    doc_attendus: [audit_interne]
+    mots_cles: ["critères d'audit", "périmètre de l'audit", "plan d'audit", "audits précédents"]
+    critique: false
+    questions_audit: []
+  - id: "9.3-R1"
+    source: "9.3"
+    theme: "Évaluation des performances"
+    exigence: "La direction procède à des revues du SMSI à intervalles planifiés."
+    attendus: ["revue de direction réalisée", "intervalles planifiés"]
+    doc_attendus: [revue_direction]
+    mots_cles: ["revue de direction", "management review"]
+    critique: true
+    questions_audit: []
+  - id: "9.3-R2"
+    source: "9.3"
+    theme: "Évaluation des performances"
+    exigence: "La revue de direction examine les éléments d'entrée attendus : actions précédentes, changements de contexte, performance (NC, mesures, audits, objectifs), retours des parties intéressées, risques, opportunités d'amélioration."
+    attendus: ["suivi des actions précédentes", "changements du contexte", "performance (NC, mesures, audits, objectifs)", "risques et état du traitement", "opportunités d'amélioration"]
+    doc_attendus: [revue_direction]
+    mots_cles: ["éléments d'entrée", "ordre du jour", "suivi des actions", "résultats d'audit", "indicateurs", "risques"]
+    critique: false
+    questions_audit: []
+  - id: "9.3-R3"
+    source: "9.3"
+    theme: "Évaluation des performances"
+    exigence: "La revue de direction aboutit à des décisions sur l'amélioration et les changements du SMSI, et ses résultats sont conservés."
+    doc_attendus: [revue_direction]
+    mots_cles: ["décisions", "éléments de sortie", "actions décidées", "compte rendu"]
+    critique: false
+    questions_audit: []
+
+  # ---------------- 10. Amélioration ----------------
+  - id: "10.1-R1"
+    source: "10.1"
+    theme: "Amélioration"
+    exigence: "L'organisme améliore en continu la pertinence, l'adéquation et l'efficacité du SMSI."
+    doc_attendus: [manuel_smsi, revue_direction, nc_actions]
+    mots_cles: ["amélioration continue", "continual improvement", "opportunités d'amélioration"]
+    critique: false
+    questions_audit: []
+  - id: "10.2-R1"
+    source: "10.2"
+    theme: "Amélioration"
+    exigence: "Lorsqu'une non-conformité survient, l'organisme réagit, la corrige et en traite les conséquences."
+    attendus: ["réaction et correction de la non-conformité", "traitement des conséquences"]
+    doc_attendus: [nc_actions, procedure]
+    mots_cles: ["non-conformité", "correction", "traitement des non-conformités", "nonconformity"]
+    critique: true
+    questions_audit: []
+  - id: "10.2-R2"
+    source: "10.2"
+    theme: "Amélioration"
+    exigence: "Les causes des non-conformités sont analysées, et l'existence de non-conformités similaires est recherchée, pour éviter leur répétition."
+    doc_attendus: [nc_actions, procedure]
+    mots_cles: ["analyse des causes", "cause racine", "5 pourquoi", "ishikawa", "root cause"]
+    critique: false
+    questions_audit: []
+  - id: "10.2-R3"
+    source: "10.2"
+    theme: "Amélioration"
+    exigence: "L'efficacité des actions correctives est vérifiée."
+    doc_attendus: [nc_actions]
+    mots_cles: ["efficacité", "vérification", "clôture", "effectiveness"]
+    critique: false
+    questions_audit: []
+  - id: "10.2-R4"
+    source: "10.2"
+    theme: "Amélioration"
+    exigence: "Les non-conformités, les actions menées et leurs résultats sont conservés."
+    doc_attendus: [nc_actions]
+    mots_cles: ["registre des non-conformités", "fiche de non-conformité", "suivi des actions correctives"]
+    critique: false
+    questions_audit: []

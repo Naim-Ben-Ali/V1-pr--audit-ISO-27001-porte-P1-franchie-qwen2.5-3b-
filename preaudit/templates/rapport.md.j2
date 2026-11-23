@@ -1,0 +1,99 @@
+---
+title: "Rapport de pré-audit documentaire — ISO/IEC 27001:2022"
+subtitle: "{{ org }}"
+date: "{{ generated_at }}"
+---
+
+# Rapport de pré-audit documentaire — ISO/IEC 27001:2022
+
+| | |
+|---|---|
+| Organisme | {{ org }} |
+| Date du rapport | {{ generated_at }} |
+| Analyse | n° {{ run.id }} du {{ run.started_at }} |
+| Statut du rapport | {% if draft %}**BROUILLON — {{ n_unreviewed }} constat(s) non revu(s) par l'auditeur**{% else %}Revu par l'auditeur ({{ n_reviewed }} constat(s) traité(s)){% endif %} |
+| Référentiel | {{ ref_version }} (clauses 4 à 10) |
+| Documents examinés | {{ docs|length }} (empreinte du corpus : `{{ run.corpus_fingerprint }}`) |
+
+## 1. Objet, critères, méthode et limites
+
+**Objet.** Revue documentaire préparatoire (type « Stage 1 ») des informations documentées du SMSI, afin d'identifier les écarts potentiels avant l'audit sur site.
+
+**Critères.** Exigences des clauses 4 à 10 d'ISO/IEC 27001:2022, déclinées en {{ n_reqs }} exigences atomiques, et informations documentées dont l'existence est exigée par la norme.
+
+**Méthode.** Contrôles automatiques (présence des documents obligatoires, cohérence de la déclaration d'applicabilité et du registre des risques, maîtrise documentaire), puis évaluation de chaque exigence par un modèle de langage exécuté localement, à partir d'extraits retrouvés par recherche hybride. Une conclusion favorable n'est retenue que si elle s'appuie sur une citation retrouvée mot pour mot dans un document du client. Chaque constat a été soumis à la revue de l'auditeur.
+
+**Limites.** Ce rapport porte sur ce qui est *documenté*, pas sur ce qui est *appliqué* : aucune conclusion de conformité ne peut être tirée sans entretiens, observation et échantillonnage sur site. « Non trouvé » signifie « non trouvé dans les documents fournis », et non « inexistant ».
+
+## 2. Synthèse
+
+{% if executive_summary %}{{ executive_summary }}
+
+{% endif %}| Thème | Exigences | NC majeures pot. | NC mineures pot. | Observations | À revoir | Documentées |
+|---|---:|---:|---:|---:|---:|---:|
+{% for t in themes %}| {{ t.name }} | {{ t.total }} | {{ t.nc_maj }} | {{ t.nc_min }} | {{ t.obs }} | {{ t.review }} | {{ t.doc }} |
+{% endfor %}| **Total** | **{{ totals.total }}** | **{{ totals.nc_maj }}** | **{{ totals.nc_min }}** | **{{ totals.obs }}** | **{{ totals.review }}** | **{{ totals.doc }}** |
+
+Contrôles automatiques : {{ checks_summary }}.
+
+## 3. Non-conformités potentielles
+
+{% for item in ncs %}
+### {{ item.ref }} — {{ item.title }}
+
+- **Classement :** {{ item.classification }}{% if item.overridden %} (modifié par l'auditeur){% endif %}
+- **Clause :** {{ item.source }}
+{% if item.status_label %}- **Constat :** {{ item.status_label }}{% if item.confidence %} — confiance {{ item.confidence|lower }}{% endif %}
+{% endif %}{% if item.rationale %}- **Analyse :** {{ item.rationale }}
+{% endif %}{% if item.missing %}- **Éléments manquants :** {{ item.missing|join(" ; ") }}
+{% endif %}{% for c in item.citations %}- **Preuve :** « {{ c.texte }} » — *{{ c.document }}*{% if c.section %}, {{ c.section }}{% endif %}{% if c.page %}, p. {{ c.page }}{% endif %}
+{% endfor %}{% if item.comment %}- **Commentaire de l'auditeur :** {{ item.comment }}
+{% endif %}{% if item.unreviewed %}- *Non revu par l'auditeur.*
+{% endif %}
+{% else %}
+Aucune non-conformité potentielle retenue.
+{% endfor %}
+
+## 4. Observations
+
+{% for item in observations %}- **{{ item.ref }}** ({{ item.source }}) — {{ item.title }}{% if item.detail %} : {{ item.detail }}{% endif %}{% if item.comment %} *Auditeur : {{ item.comment }}*{% endif %}{% if item.unreviewed %} *(non revu)*{% endif %}
+{% else %}Aucune observation retenue.
+{% endfor %}
+
+## 5. Contrôles automatiques et cohérence entre documents
+
+| Contrôle | Clause | Résultat | Détail |
+|---|---|---|---|
+{% for c in checks %}| {{ c.title|md }} | {{ c.source }} | {{ c.classification }} | {{ c.detail|md }} |
+{% endfor %}
+
+## 6. Préparation de l'audit sur site (Stage 2)
+
+Questions à poser et preuves à demander, par exigence.
+
+{% for q in stage2 %}- **{{ q.req_id }}** ({{ q.label }}) : {{ q.questions|join(" / ") }}
+{% endfor %}
+
+## Annexe A — Matrice de traçabilité
+
+| Exigence | Clause | Statut | Classement | Revue | Documents cités |
+|---|---|---|---|---|---|
+{% for f in matrix %}| {{ f.req_id }} | {{ f.source }} | {{ f.status_label }} | {{ f.classification }} | {{ f.review }} | {{ f.docs|md }} |
+{% endfor %}
+
+## Annexe B — Documents examinés
+
+| Document | Type | Version | Date | Approbation | Empreinte |
+|---|---|---|---|---|---|
+{% for d in docs %}| {{ d.filename|md }} | {{ d.type_label|md }} | {{ d.version or "—" }} | {{ d.doc_date or "—" }} | {{ (d.approved_by or "—")|md }} | `{{ d.sha256[:12] }}` |
+{% endfor %}
+
+## Annexe C — Journal d'exécution
+
+| Paramètre | Valeur |
+|---|---|
+| Modèle de jugement | {{ run.llm_model }} |
+| Modèle d'embeddings | {{ run.embed_model }} |
+| Exécution | {{ run.backend }}, 100 % locale |
+| Paramètres | `{{ run.params|md }}` |
+| Début / fin | {{ run.started_at }} / {{ run.finished_at or "en cours" }} |

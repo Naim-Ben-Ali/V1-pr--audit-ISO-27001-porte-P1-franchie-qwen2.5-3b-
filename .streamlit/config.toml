@@ -1,0 +1,13 @@
+# Interface accessible uniquement depuis ce poste, sans télémétrie.
+[server]
+address = "127.0.0.1"
+port = 8501
+headless = false
+runOnSave = false
+
+[browser]
+gatherUsageStats = false
+serverAddress = "127.0.0.1"
+
+[client]
+toolbarMode = "minimal"

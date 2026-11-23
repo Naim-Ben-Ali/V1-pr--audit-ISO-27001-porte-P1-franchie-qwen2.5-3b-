@@ -1,0 +1,14 @@
+# Données clients et résultats : ne jamais publier
+missions/
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+documents/
+# Texte de la norme (protégé par le droit d'auteur)
+*27001*.pdf
+*27002*.pdf
+# Environnement
+venv/
+__pycache__/
+.pytest_cache/
+eval/historique_evaluations.jsonl

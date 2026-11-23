@@ -1,0 +1,35 @@
+# Vérité terrain du corpus de test « Médina Logistique SARL » (make_test_corpus.py).
+# Sert à vérifier la porte P1 : aucun faux « documenté » sur les écarts plantés,
+# et 100 % de citations valides.
+
+# Contrôles automatiques : "detecte" = statut ecart ou a_confirmer attendu ; "ok" = aucun écart attendu.
+controles:
+  DO-9.2: detecte            # aucun programme ni rapport d'audit interne
+  DO-10.2: detecte           # aucun registre des NC / actions correctives
+  DO-5.2: ok
+  DO-SOA: ok
+  DO-4.3: ok
+  SOA-EXCL: detecte          # A.8.13 sans justification, A.5.23 « N/A »
+  CROSS-SOA-RTP: detecte     # A.8.13 et A.5.23 utilisées au plan de traitement mais exclues
+  RISK-OWNER-Registre_Risques.xlsx: detecte    # R3 et R5 sans propriétaire
+  META-PSSI_Politique_Securite_v2.docx: detecte   # aucune approbation
+  META-Perimetre_SMSI.docx: detecte               # revue prévue dépassée
+
+# Exigences : "documente" = doit être trouvé et cité ; "non_documente" = tout sauf « documente » ;
+# "documente_ou_partiel" = cas où « partiel » est une lecture défendable.
+exigences:
+  4.3-R1: documente
+  5.2-R1: documente
+  5.2-R2: documente
+  5.3-R1: documente
+  6.1.2-R1: documente
+  6.1.2-R5: documente
+  6.1.3-R1: documente
+  9.3-R1: documente_ou_partiel   # une revue datée, mais aucune fréquence planifiée écrite
+  9.2-R1: non_documente      # piège : « Aucun audit interne n'a encore été réalisé »
+  9.2-R2: non_documente
+  10.2-R4: non_documente
+  6.2-R2: non_documente      # objectifs sans indicateur ni cible
+  7.2-R3: non_documente      # aucune attestation de formation
+  7.4-R1: non_documente      # pas de plan de communication
+  7.5-R2: non_documente      # pas de procédure de maîtrise documentaire
